@@ -1,0 +1,26 @@
+dotenv: .env
+
+wallet:
+  from_key: ${PRIVATE_KEY}
+
+networks:
+  default: development
+  development:
+    verify: False
+    cmd_settings:
+      accounts: 60
+  ganache-local:
+    verify: False
+
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@4.4.1
+  - smartcontractkit/chainlink-brownie-contracts@1.1.1
+
+
+compiler:
+  solc:
+    version: 0.8.3
+    remappings:
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.1"
+      - "@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1"
+
