@@ -1,6 +1,6 @@
 from dis import Bytecode
 from brownie import accounts, Wei, chain, network
-from brownie import (USDSC, MockV3Aggregator, PriceFeed)
+from brownie import (USDSC, MockV3Aggregator, PriceFeed, BUSD)
 from pyrsistent import s
 from scripts.utils.helpful_scripts import *
 from web3 import HTTPProvider, Web3
@@ -63,9 +63,11 @@ def deploy_eth():
     price_feed  = PriceFeed.deploy({"from":owner})
     price_feed.setAddress(price_aggregator_address, {"from":owner})
     # print(usdsc_token.address)
+    busd  = BUSD.deploy(usdsc_token.address, {"from":owner})
 
     # Setting Address
     usdsc_token.setAddresses(price_feed.address, {"from":owner})
+    
 
 
 def main():
