@@ -9,9 +9,11 @@ def test_usdsc(isolation, owner, USDSC, PriceFeed, MockV3Aggregator, alice):
     # Checking Price of BNB
     assert 240 == price_feed.fetchPrice()/1e18
 
-    alice.transfer(usdsc_token.address, Wei(1e18))
+    requested_usdsc = 500e18
 
-    assert 240 == usdsc_token.balanceOf(alice)/1e18
+    expected_bnb_to_send = usdsc_token.swapBnbToUsdsc(requested_usdsc)
 
-    assert 240 == usdsc_token.totalSupply()/1e18
+    alice.transfer(usdsc_token.address, expected_bnb_to_send)
+
+    assert requested_usdsc/1e18 == usdsc_token.totalSupply()/1e18
 
