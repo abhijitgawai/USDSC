@@ -14,8 +14,8 @@ interface IMainPool {
     event BnbUsdscFeeChanged(uint256 _bnbusdscFee);
 
     // Functions 
-    
-    function swapUsdscToBnb() external;
+
+    function swapUsdscToBnb(uint256 _usdscAmount) external;
 
     function swapBnbToUsdsc(uint256 _usdscAmount) external view returns(uint256);
     

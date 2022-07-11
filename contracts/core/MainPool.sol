@@ -49,8 +49,11 @@ contract MainPool is IMainPool, Ownable {
         usdsc.transfer(msg.sender, _usdscToTranfer);
     }
 
-    function swapUsdscToBnb() external override {
-        
+    function swapUsdscToBnb(uint256 _usdscAmount) external override {
+        usdsc.transferFrom(msg.sender, address(this), _usdscAmount);
+        uint256 _bnbToTransfer = ( _usdscAmount * (100e18 - bnbusdscFee) ) / (priceFeed.fetchPrice() * 100 ) ;
+        payable(msg.sender).call{ value: _bnbToTransfer }("");
+
     }
 
     function swapBnbToUsdsc(uint256 _usdscAmount) external override view returns (uint256) {
