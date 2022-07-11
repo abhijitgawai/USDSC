@@ -6,17 +6,20 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "../../interfaces/IPriceFeed.sol";
 import "../../interfaces/IUSDSC.sol";
 import "../../interfaces/IMainPool.sol";
+import "../../interfaces/IBUSD.sol";
 
 contract MainPool is IMainPool, Ownable {
 
     IPriceFeed public priceFeed;
     IUSDSC public usdsc;
+    IBUSD public busd;
 
     uint256 public bnbusdscFee = 1e18;
 
     function setAddresses(
         address _priceFeedAddress,
-        address _usdscAddress
+        address _usdscAddress,
+        address _busdAddress
     )
         external
         onlyOwner
@@ -24,10 +27,11 @@ contract MainPool is IMainPool, Ownable {
 
         priceFeed = IPriceFeed(_priceFeedAddress);
         usdsc = IUSDSC(_usdscAddress);
+        busd = IBUSD(_busdAddress);
 
         emit PriceFeedAddressChanged(_priceFeedAddress);
         emit USDSCAddressChanged(_usdscAddress);
-
+        emit BUSDAddressChanged(_busdAddress);
     }
 
     function setBnbUsdscFee(
@@ -58,6 +62,17 @@ contract MainPool is IMainPool, Ownable {
 
     function swapBnbToUsdsc(uint256 _usdscAmount) external override view returns (uint256) {
         return (_usdscAmount * 100e36) / (priceFeed.fetchPrice() * (100e18 - bnbusdscFee) );
+    }
+
+    function getStablility() public view returns (uint256) {
+        return 1.21e18;
+    }
+
+    function swapUsdscToBusd(uint256 _usdscAmount) external override {
+        usdsc.transferFrom(msg.sender, address(this), _usdscAmount);
+
+        uint256 _busdToTransfer = getStablility() <= 1.2e18 ? _usdscAmount : (_usdscAmount * 1.05e18)/1e18;
+        busd.transfer(msg.sender, _busdToTransfer);
     }
 
 }

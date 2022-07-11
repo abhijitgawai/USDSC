@@ -53,9 +53,9 @@ def deploy(owner, alice, bob, katy, lauren, charlie):
     price_feed  = PriceFeed.deploy({"from":owner})
     price_feed.setAddress(price_aggregator_address, {"from":owner})
     # print(usdsc_token.address)
-    busd  = BUSD.deploy(usdsc_token.address, {"from":owner})
     main_pool = MainPool.deploy({"from":owner})
+    busd  = BUSD.deploy(main_pool.address, {"from":owner})
     usdsc_token.Initialize(main_pool.address, {"from":owner})
 
     # Setting Address
-    main_pool.setAddresses(price_feed.address, usdsc_token, {"from":owner})
+    main_pool.setAddresses(price_feed.address, usdsc_token, busd.address, {"from":owner})

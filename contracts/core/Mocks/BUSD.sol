@@ -3,11 +3,11 @@ pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../../../interfaces/IUSDSC.sol";
+
+import "../../../interfaces/IBUSD.sol";
 
 
-contract BUSD is ERC20("USDSC  Coin", "USDSC") {
+contract BUSD is ERC20("BUSD Coin", "BUSD") {
 
     address public usdscAddress;
 

@@ -21,3 +21,7 @@ accounts[2].transfer(main_pool, Wei(100e18))
 usdsc_token.approve(main_pool, 1000e20,{"from":abhi})
 
 main_pool.swapUsdscToBnb(500e18, {"from":abhi, "value":Wei(1e18)})
+
+busd.balanceOf(main_pool)/1e18
+usdsc_token.approve(main_pool, 1000e20,{"from":abhi})
+main_pool.swapUsdscToBusd(100e18, {"from":abhi})
