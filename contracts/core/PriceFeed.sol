@@ -38,7 +38,7 @@ contract PriceFeed is Ownable, IPriceFeed {
     */
     uint constant public MAX_PRICE_DIFFERENCE_BETWEEN_ORACLES = 5e16; // 5%
 
-    // The last good price seen from an oracle by Orum
+    // The last good price seen from an oracle by ourProject
     uint public lastGoodPrice;
 
     struct ChainlinkResponse {
@@ -86,14 +86,14 @@ contract PriceFeed is Ownable, IPriceFeed {
 
     /*
     * fetchPrice():
-    * Returns the latest price obtained from the Oracle. Called by Orum functions that require a current price.
+    * Returns the latest price obtained from the Oracle. Called by ourProject functions that require a current price.
     *
     * Also callable by anyone externally.
     *
-    * Non-view function - it stores the last good price seen by Orum.
+    * Non-view function - it stores the last good price seen by ourProject.
     *
     * Uses a main oracle (Chainlink) and a fallback oracle (Tellor) in case Chainlink fails. If both fail, 
-    * it uses the last good price seen by Orum.
+    * it uses the last good price seen by ourProject.
     *
     */
     function fetchPrice() external view override returns (uint) {
@@ -110,18 +110,18 @@ contract PriceFeed is Ownable, IPriceFeed {
 
     function _scaleChainlinkPriceByDigits(uint _price, uint _answerDigits) internal pure returns (uint) {
         /*
-        * Convert the price returned by the Chainlink oracle to an 18-digit decimal for use by Orum.
-        * At date of Orum launch, Chainlink uses an 8-digit price, but we also handle the possibility of
+        * Convert the price returned by the Chainlink oracle to an 18-digit decimal for use by ourProject.
+        * At date of ourProject launch, Chainlink uses an 8-digit price, but we also handle the possibility of
         * future changes.
         *
         */
         uint price;
         if (_answerDigits >= TARGET_DIGITS) {
-            // Scale the returned price value down to Orum's target precision
+            // Scale the returned price value down to ourProject's target precision
             price = _price / (10 ** (_answerDigits - TARGET_DIGITS));
         }
         else if (_answerDigits < TARGET_DIGITS) {
-            // Scale the returned price value up to Orum's target precision
+            // Scale the returned price value up to ourProject's target precision
             price = _price * (10 ** (TARGET_DIGITS - _answerDigits));
         }
         return price;
